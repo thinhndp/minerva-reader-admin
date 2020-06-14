@@ -6,17 +6,17 @@ import { GenreInput } from '../interfaces/genre';
 // }
 
 export const getAllGenres = () => {
-  return axios.get('/genres');
+  return axios.get('/categories');
 }
 
 export const addGenre = (data: GenreInput) => {
-  return axios.post('/genres', data);
+  return axios.post('/categories', data);
 }
 
 export const updateGenre = (id: string, data: GenreInput) => {
-  return axios.put(`/genres/${id}`, data);
+  return axios.put(`/categories/${id}`, data);
 }
 
 export const deleteGenre = (id: string) => {
-  return axios.delete(`/genres/${id}`);
+  return axios.delete(`/categories/${id}`);
 }

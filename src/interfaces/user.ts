@@ -1,17 +1,21 @@
 export interface User {
   id: string,
   username: string,
-  email: string,
-  roles: Array<Role>,
-  cPoint: number,
+  fullName: string,
+  // email: string,
+  // roles: Array<Role>,
+  roles: Array<string>,
+  // cPoint: number,
 }
 
 export interface UserInput {
-  cPoint: number,
-  roleIds: Array<string>,
+  // cPoint: number,
+  // roleIds: Array<string>,
+  fullName: string,
+  roles: Array<string>
 }
 
-export interface Role {
-  id: string,
-  role: string,
-}
+// export interface Role {
+//   id: string,
+//   role: string,
+// }

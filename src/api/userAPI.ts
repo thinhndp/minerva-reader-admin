@@ -2,6 +2,7 @@ import axios from 'axios';
 import { UserInput } from '../interfaces/user';
 
 export const getAllUsers = () => {
+  console.log('alo');
   return axios.get('/users');
 }
 

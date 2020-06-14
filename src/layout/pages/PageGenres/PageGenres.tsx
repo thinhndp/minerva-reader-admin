@@ -41,8 +41,10 @@ const PageGenres: FunctionComponent = () => {
     setIsTableLoading(true);
     genreAPI.getAllGenres()
       .then(response => {
+        console.log('genre');
+        console.log(response);
         setIsTableLoading(false);
-        setGenres(response.data);
+        setGenres(response.data.categories);
       })
       .catch(err => {
         setIsTableLoading(false);

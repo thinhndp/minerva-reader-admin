@@ -4,7 +4,7 @@ import React, { useState, FunctionComponent } from 'react';
 import * as userAPI from '../../../../api/userAPI';
 
 // Interface
-import { User, UserInput, Role } from '../../../../interfaces/user';
+import { User, UserInput } from '../../../../interfaces/user';
 
 // Component
 import Button from '@material-ui/core/Button';
@@ -20,23 +20,23 @@ import CheckboxGroup from '../../../../components/CheckboxGroup';
 
 interface IDialogAddOrEditUserProps {
   userToEdit: User | null, // null: DialogAdd. not null: DialogEdit
-  roleList: Array<Role>,
+  roleList: Array<String>,
   isOpen: boolean,
   onClose: Function, // Call this to close Dialog
   onSave: Function, // Call this to close Dialog & refresh table
 }
 
 const DialogAddOrEditUser: FunctionComponent<IDialogAddOrEditUserProps> = (props) => {
-  const [userInput, setUserInput] = useState<UserInput>({ roleIds: [], cPoint: 0 });
+  const [userInput, setUserInput] = useState<UserInput>({ roles: [], fullName: '' });
   const [isLoadingSave, setIsLoadingSave] = useState(false);
 
   const onDialogEnter = () => {
     if (!props.userToEdit) {
-      setUserInput({ roleIds: [], cPoint: 0 });
+      setUserInput({ roles: [], fullName: '' });
     } else {
       setUserInput({
-        roleIds: props.userToEdit.roles.map(role => role.id),
-        cPoint: props.userToEdit.cPoint
+        roles: props.userToEdit.roles,
+        fullName: props.userToEdit.fullName
       });
     }
   }
@@ -86,8 +86,8 @@ const DialogAddOrEditUser: FunctionComponent<IDialogAddOrEditUserProps> = (props
           options={props.roleList}
           fieldValue="id"
           fieldLabel="role"
-          selectedValues={userInput.roleIds}
-          onChange={(newSelectedValues: any) => { setUserInput({ ...userInput, roleIds: [...userInput.roleIds, ...newSelectedValues] }) }}
+          selectedValues={userInput.roles}
+          onChange={(newSelectedValues: any) => { setUserInput({ ...userInput, roles: [...userInput.roles, ...newSelectedValues] }) }}
         />
       </DialogContent>
       <DialogActions>

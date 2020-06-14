@@ -4,7 +4,7 @@ import React, { useEffect, useState, FunctionComponent } from 'react';
 import * as userAPI from '../../../api/userAPI';
 
 // Interface
-import { User, Role } from '../../../interfaces/user';
+import { User } from '../../../interfaces/user';
 
 // Component
 import MaterialTable, { Column, } from 'material-table';
@@ -18,15 +18,19 @@ import TableRoleInfo from '../../../components/TableRoleInfo';
 // Class
 // import classes from './PageUsers.module.scss';
 
-const ROLES: Array<Role> = [
-  {
-    id: "5dc41c396db44b55f81be643",
-    role: "admin",
-  },
-  {
-    id: "5dc41c396db44b55f81be645",
-    role: "staff",
-  },
+// const ROLES: Array<Role> = [
+//   {
+//     id: "5dc41c396db44b55f81be643",
+//     role: "admin",
+//   },
+//   {
+//     id: "5dc41c396db44b55f81be645",
+//     role: "staff",
+//   },
+// ]
+const ROLES: Array<string> = [
+  "ADMIN",
+  "USER"
 ]
 
 const PageUsers: FunctionComponent = () => {
@@ -47,10 +51,16 @@ const PageUsers: FunctionComponent = () => {
       title: 'Roles',
       field: 'roles',
       render: (rowData) => {
-        const roleStrList = rowData.roles.map(role => role.role).filter(roleStr => roleStr === 'ADMIN' || roleStr === 'staff');
-        const roleStrCapitalizedList = roleStrList.map(roleStr => roleStr.charAt(0).toUpperCase() + roleStr.slice(1))
-        const roleToDisplay = roleStrCapitalizedList.join(', ');
-        return (<span>{roleToDisplay}</span>)
+        // console.log('heyy');
+        // console.log(rowData);
+        let rolesStrList = rowData.roles;
+        if (!rolesStrList) {
+          rolesStrList = [ "ADMIN", "USER" ];
+        }
+        // const roleStrCapitalizedList = roleStrList.map(roleStr => roleStr.charAt(0).toUpperCase() + roleStr.slice(1))
+        // const roleToDisplay = roleStrCapitalizedList.join(', ');
+        const rolesToDisplay = rolesStrList.join(', ');
+        return (<span>{rolesToDisplay}</span>)
       }
     },
     // { title: 'Minimum Age Allowed', field: 'minAge' },
@@ -64,8 +74,10 @@ const PageUsers: FunctionComponent = () => {
     setIsTableLoading(true);
     userAPI.getAllUsers()
       .then(response => {
+        console.log('Hello');
+        console.log(response);
         setIsTableLoading(false);
-        setUsers(response.data);
+        setUsers(response.data.users);
       })
       .catch(err => {
         setIsTableLoading(false);
