@@ -49,17 +49,17 @@ const App: React.FC = () => {
     const tokenStr = localStorage.getItem('token');
     console.log(tokenStr);
     if (tokenStr) {
-      // authAPI.checkToken(tokenStr)
-      //   .then(response => {
-      //     if (response.data === true) {
-      //       setAuthContextFunc(tokenStr);
-      //     } else {
-      //       localStorage.removeItem('token');
-      //     }
-      //   })
-      //   .catch(err => {
-      //     localStorage.removeItem('token');
-      //   })
+      authAPI.checkToken(tokenStr)
+        .then(response => {
+          if (response.data && response.data.isValid === true) {
+            setAuthContextFunc(tokenStr);
+          } else {
+            localStorage.removeItem('token');
+          }
+        })
+        .catch(err => {
+          localStorage.removeItem('token');
+        })
       setAuthContextFunc(tokenStr);
     } else {
       localStorage.removeItem('token');

@@ -9,5 +9,6 @@ export const signUp = (email: string, username: string, password: string) => {
 }
 
 export const checkToken = (tokenStr: string) => {
+  console.log(tokenStr);
   return axios.get(`/check-token/${tokenStr}`);
 }
