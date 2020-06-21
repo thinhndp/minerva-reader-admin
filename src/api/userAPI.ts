@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UserInput } from '../interfaces/user';
+import { UserInput, UserUpdateRoleInput } from '../interfaces/user';
 
 export const getAllUsers = () => {
   console.log('alo');
@@ -12,6 +12,10 @@ export const getAllUsers = () => {
 
 export const updateUser = (id: string, data: UserInput) => {
   return axios.put(`/users/update/${id}`, data);
+}
+
+export const updateUserRole = (data: UserUpdateRoleInput) => {
+  return axios.put('/users/update-roles', data);
 }
 
 // export const deleteUser = (id: string) => {

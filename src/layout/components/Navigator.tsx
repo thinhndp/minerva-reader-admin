@@ -34,17 +34,18 @@ const categories = [
     ],
   },
   {
-    id: 'Theater',
+    id: 'Manager',
     children: [
-      { id: 'Clusters', icon: <IconMeetingRoom />, path: '/clusters', requiredRoles: ['ADMIN'] },
+      // { id: 'Clusters', icon: <IconMeetingRoom />, path: '/clusters', requiredRoles: ['ADMIN'] },
       { id: 'Genres', icon: <IconList />, path: '/genres', requiredRoles: ['ADMIN'] },
-      { id: 'Screen Types', icon: <IconAspectRatio />, path: '/screen-types', requiredRoles: ['ADMIN'] },
-      { id: 'Rates', icon: <IconRate />, path: '/rates', requiredRoles: ['ADMIN'] },
-      { id: 'Movies', icon: <IconMovie />, path: '/movies', requiredRoles: ['ADMIN'] },
-      { id: 'Rooms', icon: <IconMeetingRoom />, path: '/rooms', requiredRoles: ['ADMIN'] },
-      { id: 'Showtimes', icon: <IconMovie />, path: '/showtimes', requiredRoles: ['ADMIN', 'staff'] },
-      { id: 'Discounts', icon: <IconDiscount />, path: '/discounts', requiredRoles: ['ADMIN'] },
-      { id: 'Report', icon: <IconReport />, path: '/report', requiredRoles: ['ADMIN'] },
+      { id: 'Authors', icon: <IconList />, path: '/authors', requiredRoles: ['ADMIN'] },
+      // { id: 'Screen Types', icon: <IconAspectRatio />, path: '/screen-types', requiredRoles: ['ADMIN'] },
+      // { id: 'Rates', icon: <IconRate />, path: '/rates', requiredRoles: ['ADMIN'] },
+      // { id: 'Movies', icon: <IconMovie />, path: '/movies', requiredRoles: ['ADMIN'] },
+      // { id: 'Rooms', icon: <IconMeetingRoom />, path: '/rooms', requiredRoles: ['ADMIN'] },
+      // { id: 'Showtimes', icon: <IconMovie />, path: '/showtimes', requiredRoles: ['ADMIN', 'staff'] },
+      // { id: 'Discounts', icon: <IconDiscount />, path: '/discounts', requiredRoles: ['ADMIN'] },
+      // { id: 'Report', icon: <IconReport />, path: '/report', requiredRoles: ['ADMIN'] },
       { id: 'Users', icon: <IconPeople />, path: '/users', requiredRoles: ['ADMIN'] },
     ],
   },
@@ -162,7 +163,7 @@ const Navigator: FunctionComponent<NavigatorProps> = (props) => {
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
         <ListItem className={clsx(classes.firebase, classes.item, classes.itemCategory)}>
-          Cinex
+          Minerva Reader
         </ListItem>
         <ListItem className={clsx(classes.item, classes.itemCategory)}>
           <ListItemIcon className={classes.itemIcon}>
@@ -173,7 +174,7 @@ const Navigator: FunctionComponent<NavigatorProps> = (props) => {
               primary: classes.itemPrimary,
             }}
           >
-            Cinex NYC
+            Minerva Reader Admin
           </ListItemText>
         </ListItem>
         {/* {categories.map(({ id, children }) => (

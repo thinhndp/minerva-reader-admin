@@ -6,7 +6,7 @@ const PageDashboard: FunctionComponent = () => {
   return (
     <div className={classes['page-container']}>
       <div className={classes['page-content']}>
-        Welcome to Cinex Dashboard!
+        Minerva Reader
       </div>
       <img className={classes['logo']} src='https://i.imgur.com/xiNxSJa.png' alt='cinex-logo'></img>
     </div>

@@ -15,6 +15,11 @@ export interface UserInput {
   roles: Array<string>
 }
 
+export interface UserUpdateRoleInput {
+  usernames: Array<string>,
+  roles: Array<string>,
+}
+
 // export interface Role {
 //   id: string,
 //   role: string,

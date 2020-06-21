@@ -47,6 +47,7 @@ const PageUsers: FunctionComponent = () => {
   const columns: Array<Column<User>> = [
     { title: 'Id', field: 'id', editable: 'never', cellStyle: {width: '300px'} },
     { title: 'Username', field: 'username' },
+    { title: 'Name', field: 'fullName' },
     {
       title: 'Roles',
       field: 'roles',
@@ -120,14 +121,14 @@ const PageUsers: FunctionComponent = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent: 'center', marginBottom: '12px', color: '#555', fontSize: '16px', }}>
+      {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent: 'center', marginBottom: '12px', color: '#555', fontSize: '16px', }}>
         <Paper style={{ padding: 20, }}>
           <div style={{ fontWeight: 'bold', fontSize: 22, color: '#333', }}>Permissions</div>
           <div style={{ padding: 10, }}>
             <TableRoleInfo />
           </div>
         </Paper>
-      </div>
+      </div> */}
 
       <MaterialTable
         title="Users"

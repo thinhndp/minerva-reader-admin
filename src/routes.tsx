@@ -11,7 +11,8 @@ import PageScreenTypes from './layout/pages/PageScreenTypes/PageScreenTypes';
 import PageShowtimes from './layout/pages/PageShowtimes/PageShowtimes';
 import PageDiscounts from './layout/pages/PageDiscounts/PageDiscounts';
 import PageReport from './layout/pages/PageReport/PageReport';
-import PageUsers from './layout/pages/PageUsers/PageUsers'
+import PageUsers from './layout/pages/PageUsers/PageUsers';
+import PageAuthors from './layout/pages/PageAuthors/PageAuthors';
 
 export const routes = [
   {
@@ -32,6 +33,11 @@ export const routes = [
   {
     path: '/genres',
     component: <PageGenres />,
+    requiredRoles: ['ADMIN'],
+  },
+  {
+    path: '/authors',
+    component: <PageAuthors />,
     requiredRoles: ['ADMIN'],
   },
   {
