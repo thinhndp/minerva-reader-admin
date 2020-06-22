@@ -13,6 +13,7 @@ import MaterialTable, { Column, MTableAction } from 'material-table';
 
 // Custom Component
 import DialogAddOrEditAuthor from './components/DialogAddOrEditAuthor';
+import ModalAddOrEditAuthor from './components/ModalAddOrEditAuthor';
 import DialogYesNo from '../../../components/DialogYesNo';
 
 const NO_IMAGE_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
@@ -130,7 +131,7 @@ const PageAuthors: FunctionComponent = () => {
 		}}
 	  />
 
-	  <DialogAddOrEditAuthor
+	  {/* <DialogAddOrEditAuthor
 		authorToEdit={authorToEdit}
 		isOpen={isDialogAddOrEditOpen}
 		onClose={() => {
@@ -149,6 +150,23 @@ const PageAuthors: FunctionComponent = () => {
 			setAuthorToEdit(null);
 		  }, 150);
 
+		  getAllAuthors();
+		}}
+	  /> */}
+	  <ModalAddOrEditAuthor
+		authorToEdit={authorToEdit}
+		isOpen={isDialogAddOrEditOpen}
+		onClose={() => {
+		  setIsDialogAddOrEditOpen(false);
+		  setTimeout(() => {
+			setAuthorToEdit(null);
+		  }, 150);
+		}}
+		onSave={() => {
+		  setIsDialogAddOrEditOpen(false);
+		  setTimeout(() => {
+			setAuthorToEdit(null);
+		  }, 150);
 		  getAllAuthors();
 		}}
 	  />

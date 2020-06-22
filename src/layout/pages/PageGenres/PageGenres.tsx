@@ -12,7 +12,8 @@ import Button from '@material-ui/core/Button';
 import MaterialTable, { Column, MTableAction } from 'material-table';
 
 // Custom Component
-import DialogAddOrEditGenre from './components/DialogAddOrEditGenre';
+// import DialogAddOrEditGenre from './components/DialogAddOrEditGenre';
+import ModalAddOrEditGenre from './components/ModalAddOrEditGenre';
 import DialogYesNo from '../../../components/DialogYesNo';
 
 // Class
@@ -118,7 +119,7 @@ const PageGenres: FunctionComponent = () => {
         }}
       />
 
-      <DialogAddOrEditGenre
+      {/* <DialogAddOrEditGenre
         genreToEdit={genreToEdit}
         isOpen={isDialogAddOrEditOpen}
         onClose={() => {
@@ -139,6 +140,24 @@ const PageGenres: FunctionComponent = () => {
             setGenreToEdit(null);
           }, 150);
 
+          getAllGenres();
+        }}
+      /> */}
+
+      <ModalAddOrEditGenre
+        genreToEdit={genreToEdit}
+        isOpen={isDialogAddOrEditOpen}
+        onClose={() => {
+          setIsDialogAddOrEditOpen(false);
+          setTimeout(() => {
+            setGenreToEdit(null);
+          }, 150);
+        }}
+        onSave={() => {
+          setIsDialogAddOrEditOpen(false);
+          setTimeout(() => {
+            setGenreToEdit(null);
+          }, 150);
           getAllGenres();
         }}
       />
