@@ -13,6 +13,7 @@ import PageDiscounts from './layout/pages/PageDiscounts/PageDiscounts';
 import PageReport from './layout/pages/PageReport/PageReport';
 import PageUsers from './layout/pages/PageUsers/PageUsers';
 import PageAuthors from './layout/pages/PageAuthors/PageAuthors';
+import PageBooks from './layout/pages/PageBooks/PageBooks';
 
 export const routes = [
   {
@@ -28,6 +29,11 @@ export const routes = [
   {
     path: '/clusters',
     component: <PageClusters />,
+    requiredRoles: ['ADMIN'],
+  },
+  {
+    path: '/books',
+    component: <PageBooks />,
     requiredRoles: ['ADMIN'],
   },
   {

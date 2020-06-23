@@ -37,6 +37,7 @@ const categories = [
     id: 'Manager',
     children: [
       // { id: 'Clusters', icon: <IconMeetingRoom />, path: '/clusters', requiredRoles: ['ADMIN'] },
+      { id: 'Books', icon: <IconList />, path: '/books', requiredRoles: ['ADMIN'] },
       { id: 'Genres', icon: <IconList />, path: '/genres', requiredRoles: ['ADMIN'] },
       { id: 'Authors', icon: <IconList />, path: '/authors', requiredRoles: ['ADMIN'] },
       // { id: 'Screen Types', icon: <IconAspectRatio />, path: '/screen-types', requiredRoles: ['ADMIN'] },

@@ -19,6 +19,6 @@ export interface BookInput {
 	publisher: string,
 	image: string,
 	description: string,
-	categoryIds: Genre[],
-	authorIds: Author[],
+	categoryIds: string[],
+	authorIds: string[],
 }
