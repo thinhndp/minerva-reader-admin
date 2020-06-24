@@ -2,9 +2,13 @@ import React, { useEffect, useState, FunctionComponent } from 'react';
 
 // Misc
 import * as bookAPI from '../../../api/bookAPI';
+import * as genreAPI from '../../../api/genreAPI';
+import * as authorAPI from '../../../api/authorAPI';
 
 // Interface
 import { Book } from '../../../interfaces/book';
+import { Author } from '../../../interfaces/author';
+import { Genre } from '../../../interfaces/genre';
 
 // Component
 import AddIcon from '@material-ui/icons/Add';
@@ -26,6 +30,10 @@ const PageBooks: FunctionComponent = () => {
   const [bookIdToDelete, setBookIdToDelete] = useState('');
   const [isDialogDeleteOpen, setIsDialogDeleteOpen] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const [authors, setAuthors] = useState<Array<Author>>([]);
+  const [genres, setGenres] = useState<Array<Genre>>([]);
+//   let authors: Author[] = [];
+//   let genres: Genre[] = [];
   
   const columns: Array<Column<Book>> = [
 	{ title: 'Id', field: 'id', editable: 'never', cellStyle: {width: '300px'} },
@@ -72,14 +80,31 @@ const PageBooks: FunctionComponent = () => {
 
   const getAllBooks = () => {
 	setIsTableLoading(true);
-	bookAPI.getAllBooks()
-	  .then(response => {
-		setIsTableLoading(false);
-		setBooks(response.data.books);
-	  })
-	  .catch(error => {
-		setIsTableLoading(false);
-	  })
+	const getAllBooksPromise = bookAPI.getAllBooks();
+	const getAllAuthorsPromise = authorAPI.getAllAuthors();
+	const getAllGenresPromise = genreAPI.getAllGenres();
+	Promise.all([ getAllBooksPromise, getAllAuthorsPromise, getAllGenresPromise ])
+			.then(([ bookResponse, authorResponse, genreResponse]) => {
+				// console.log(responses)
+				setIsTableLoading(false);
+				setBooks(bookResponse.data.books);
+				// authors = [ ...authorResponse.data.authors ];
+				// genres = [ ...genreResponse.data.categories ];
+				setAuthors([ ...authorResponse.data.authors ]);
+				setGenres([ ...genreResponse.data.categories ]);
+				console.log(genres);
+			})
+			.catch(error => {
+				setIsTableLoading(false);
+			})
+	// bookAPI.getAllBooks()
+	//   .then(response => {
+	// 	setIsTableLoading(false);
+	// 	setBooks(response.data.books);
+	//   })
+	//   .catch(error => {
+	// 	setIsTableLoading(false);
+	//   })
   }
 
   const onAddClick = () => {
@@ -163,6 +188,8 @@ const PageBooks: FunctionComponent = () => {
 		  }, 150);
 		  getAllBooks();
 		}}
+		authorList={authors}
+		genreList={genres}
 	  />
 
 	  

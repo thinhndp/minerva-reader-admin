@@ -1,0 +1,34 @@
+.custom-chip-container {
+	padding: 5px;
+	background-color: #009be5;
+	margin: 2.5px;
+	border-radius: 10px;
+	cursor: default;
+	font-weight: bold;
+	color: #fefefe;
+	display: flex;
+	align-items: center;
+	padding: 6px 8px;
+
+	.chip-x-icon {
+		cursor: pointer;
+		border-radius: 100%;
+		width: 16px;
+		height: 16px;
+		display: flex;
+		margin-left: 4px;
+		justify-content: center;
+		align-items: center;
+		user-select: none;
+	}
+
+	.chip-x-icon:hover {
+		transition: 100ms ease-in;
+		background-color: #fefefe;
+		color: #009be5;
+	}
+}
+
+.suggestion {
+	cursor: pointer;
+}
