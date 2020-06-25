@@ -40,6 +40,7 @@ const categories = [
       { id: 'Books', icon: <IconList />, path: '/books', requiredRoles: ['ADMIN'] },
       { id: 'Genres', icon: <IconList />, path: '/genres', requiredRoles: ['ADMIN'] },
       { id: 'Authors', icon: <IconList />, path: '/authors', requiredRoles: ['ADMIN'] },
+      { id: 'Reviews', icon: <IconList />, path: '/reviews', requiredRoles: ['ADMIN'] },
       // { id: 'Screen Types', icon: <IconAspectRatio />, path: '/screen-types', requiredRoles: ['ADMIN'] },
       // { id: 'Rates', icon: <IconRate />, path: '/rates', requiredRoles: ['ADMIN'] },
       // { id: 'Movies', icon: <IconMovie />, path: '/movies', requiredRoles: ['ADMIN'] },

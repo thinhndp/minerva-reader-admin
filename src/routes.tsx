@@ -14,6 +14,7 @@ import PageReport from './layout/pages/PageReport/PageReport';
 import PageUsers from './layout/pages/PageUsers/PageUsers';
 import PageAuthors from './layout/pages/PageAuthors/PageAuthors';
 import PageBooks from './layout/pages/PageBooks/PageBooks';
+import PageReviews from './layout/pages/PageReviews/PageReviews';
 
 export const routes = [
   {
@@ -44,6 +45,11 @@ export const routes = [
   {
     path: '/authors',
     component: <PageAuthors />,
+    requiredRoles: ['ADMIN'],
+  },
+  {
+    path: '/reviews',
+    component: <PageReviews />,
     requiredRoles: ['ADMIN'],
   },
   {
