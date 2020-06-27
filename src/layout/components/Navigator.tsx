@@ -15,15 +15,12 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconApps from '@material-ui/icons/Apps';
 import IconHome from '@material-ui/icons/Home';
-import IconAspectRatio from '@material-ui/icons/AspectRatio';
-import IconList from '@material-ui/icons/List';
-import IconMeetingRoom from '@material-ui/icons/MeetingRoom';
-import IconMovie from '@material-ui/icons/Movie';
+import IconMenuBook from '@material-ui/icons/MenuBook';
+import IconCategory from '@material-ui/icons/Category';
+import IconLocalLibrary from '@material-ui/icons/LocalLibrary';
+import IconRateReview from '@material-ui/icons/RateReview';
 import IconPeople from '@material-ui/icons/People';
 import IconVpnKey from '@material-ui/icons/VpnKey';
-import IconRate from '@material-ui/icons/Cake';
-import IconDiscount from '@material-ui/icons/Redeem';
-import IconReport from '@material-ui/icons/ShowChart';
 
 const categories = [
   {
@@ -37,17 +34,10 @@ const categories = [
     id: 'Manager',
     children: [
       // { id: 'Clusters', icon: <IconMeetingRoom />, path: '/clusters', requiredRoles: ['ADMIN'] },
-      { id: 'Books', icon: <IconList />, path: '/books', requiredRoles: ['ADMIN'] },
-      { id: 'Genres', icon: <IconList />, path: '/genres', requiredRoles: ['ADMIN'] },
-      { id: 'Authors', icon: <IconList />, path: '/authors', requiredRoles: ['ADMIN'] },
-      { id: 'Reviews', icon: <IconList />, path: '/reviews', requiredRoles: ['ADMIN'] },
-      // { id: 'Screen Types', icon: <IconAspectRatio />, path: '/screen-types', requiredRoles: ['ADMIN'] },
-      // { id: 'Rates', icon: <IconRate />, path: '/rates', requiredRoles: ['ADMIN'] },
-      // { id: 'Movies', icon: <IconMovie />, path: '/movies', requiredRoles: ['ADMIN'] },
-      // { id: 'Rooms', icon: <IconMeetingRoom />, path: '/rooms', requiredRoles: ['ADMIN'] },
-      // { id: 'Showtimes', icon: <IconMovie />, path: '/showtimes', requiredRoles: ['ADMIN', 'staff'] },
-      // { id: 'Discounts', icon: <IconDiscount />, path: '/discounts', requiredRoles: ['ADMIN'] },
-      // { id: 'Report', icon: <IconReport />, path: '/report', requiredRoles: ['ADMIN'] },
+      { id: 'Books', icon: <IconMenuBook />, path: '/books', requiredRoles: ['ADMIN'] },
+      { id: 'Genres', icon: <IconCategory />, path: '/genres', requiredRoles: ['ADMIN'] },
+      { id: 'Authors', icon: <IconLocalLibrary />, path: '/authors', requiredRoles: ['ADMIN'] },
+      { id: 'Reviews', icon: <IconRateReview />, path: '/reviews', requiredRoles: ['ADMIN'] },
       { id: 'Users', icon: <IconPeople />, path: '/users', requiredRoles: ['ADMIN'] },
     ],
   },

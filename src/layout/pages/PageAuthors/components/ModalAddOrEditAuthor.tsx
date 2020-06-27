@@ -2,10 +2,9 @@ import React, { useState, FunctionComponent } from 'react';
 import * as authorAPI from '../../../../api/authorAPI';
 import { Author, AuthorInput } from '../../../../interfaces/author';
 import { useFormik } from 'formik';
-import { Modal, Form, InputGroup, Col, Button } from "react-bootstrap";
-import MButton from '@material-ui/core/Button';
+import { Modal, Form, InputGroup } from "react-bootstrap";
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { storage } from '../../../../firebase/firebase';
 import UploadButton from '../../../components/UploadButton';
 import * as FileUtils from '../../../../utils/FileUtils';
 
@@ -28,7 +27,7 @@ const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (pr
 		return errors;
 	}
 
-	const onSaveSuccessful = (resetForm: any) => {
+	const onSaveSuccessful = () => {
 		setIsLoadingSave(false);
 		setAuthorPhoto(null);
 		props.onSave();
@@ -54,32 +53,42 @@ const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (pr
 		else {
 			// Submit
 			setIsLoadingSave(true);
-			FileUtils.uploadFilePromise('AuthorPhotos', authorPhoto)
-				.then((photoUrl: any) => {
-					console.log(photoUrl);
-					const authorInput = { ...values, PhotoURL: photoUrl };
-					if (!props.authorToEdit) {
-						authorAPI.addAuthor(authorInput)
-							.then(response => {
-								console.log(response);
-								onSaveSuccessful(resetForm);
-							})
-							.catch(error => {
-								setIsLoadingSave(false);
-								console.log(error);
-							})
-					}
-					else {
-						authorAPI.updateAuthor(props.authorToEdit.id, authorInput)
-							.then(response => {
-								console.log(response);
-								onSaveSuccessful(resetForm);
-							})
-							.catch(error => {
-								setIsLoadingSave(false);
-								console.log(error);
-							})
-					}
+			if (authorPhoto) {
+				FileUtils.uploadFilePromise('AuthorPhotos', authorPhoto)
+					.then((photoUrl: any) => {
+						console.log(photoUrl);
+						const authorInput = { ...values, PhotoURL: photoUrl };
+						callAPI(authorInput)
+					})
+					.catch(error => {
+						setIsLoadingSave(false);
+						console.log(error);
+					})
+			}
+			else {
+				const authorInput = { ...values };
+				callAPI(authorInput);
+			}
+		}
+	}
+
+	const callAPI = (authorInput: AuthorInput) => {
+		if (!props.authorToEdit) {
+			authorAPI.addAuthor(authorInput)
+				.then(response => {
+					console.log(response);
+					onSaveSuccessful();
+				})
+				.catch(error => {
+					setIsLoadingSave(false);
+					console.log(error);
+				})
+		}
+		else {
+			authorAPI.updateAuthor(props.authorToEdit.id, authorInput)
+				.then(response => {
+					console.log(response);
+					onSaveSuccessful();
 				})
 				.catch(error => {
 					setIsLoadingSave(false);
@@ -193,14 +202,14 @@ const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (pr
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
-				<MButton
+				<Button
 					// color="primary"
 					onClick={() => onModalClose()}
 				>
 					Cancel
-				</MButton>
+				</Button>
 				<div style={{position: 'relative'}}>
-					<MButton
+					<Button
 						color="primary"
 						variant="contained"
 						onClick={(e: any) => {
@@ -210,7 +219,7 @@ const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (pr
 						disabled={isLoadingSave}
 					>
 						Save
-					</MButton>
+					</Button>
 					{isLoadingSave && <CircularProgress size={24} className="circular-center-size-24px" />}
 				</div>
 			</Modal.Footer>

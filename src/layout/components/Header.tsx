@@ -96,7 +96,7 @@ const Header: FunctionComponent<HeaderProps> = (props) => {
 
   return (
     <React.Fragment>
-      <AppBar color="primary" position="sticky" elevation={0}>
+      <AppBar color="primary" position="sticky" elevation={0} style={{ zIndex: 100 }}>
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
             <Hidden smUp>

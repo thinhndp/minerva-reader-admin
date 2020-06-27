@@ -5,10 +5,11 @@ import classes from './PageDashboard.module.scss';
 const PageDashboard: FunctionComponent = () => {
   return (
     <div className={classes['page-container']}>
-      <div className={classes['page-content']}>
+      <div>TODO: Edit this</div>
+      {/* <div className={classes['page-content']}>
         Minerva Reader
       </div>
-      <img className={classes['logo']} src='https://i.imgur.com/xiNxSJa.png' alt='cinex-logo'></img>
+      <img className={classes['logo']} src='https://i.imgur.com/xiNxSJa.png' alt='cinex-logo'></img> */}
     </div>
 
   );

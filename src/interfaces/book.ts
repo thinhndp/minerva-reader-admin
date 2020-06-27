@@ -11,6 +11,7 @@ export interface Book {
 	categories: Genre[],
 	authors: Author[],
 	rating: number,
+	link: string,
 }
 
 export interface BookInput {
@@ -18,6 +19,7 @@ export interface BookInput {
 	title: string,
 	publisher: string,
 	image: string,
+	link: string,
 	description: string,
 	categoryIds: string[],
 	authorIds: string[],

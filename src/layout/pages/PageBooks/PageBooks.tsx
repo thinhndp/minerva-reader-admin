@@ -5,6 +5,8 @@ import * as bookAPI from '../../../api/bookAPI';
 import * as genreAPI from '../../../api/genreAPI';
 import * as authorAPI from '../../../api/authorAPI';
 
+import { Link } from 'react-router-dom';
+
 // Interface
 import { Book } from '../../../interfaces/book';
 import { Author } from '../../../interfaces/author';
@@ -18,6 +20,8 @@ import MaterialTable, { Column, MTableAction } from 'material-table';
 // Custom Component
 import ModalAddOrEditBook from './components/ModalAddOrEditBook';
 import DialogYesNo from '../../../components/DialogYesNo';
+
+import styles from './PageBooks.module.scss';
 
 const NO_IMAGE_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
 
@@ -55,6 +59,17 @@ const PageBooks: FunctionComponent = () => {
 			const genreNameList = rowData.categories ? rowData.categories.map(category => category.name) : [ 'n/a' ];
 			const formattedGenreList = genreNameList.join(', ');
 			return (<span>{formattedGenreList}</span>);
+		}
+	},
+	{
+		title: 'Download Link',
+		field: 'link',
+		render: (rowData) => {
+			return (
+				rowData.link 
+				 ? <a className={styles['link']} href={rowData.link}>Download</a>
+				 : <div>Not Available</div>
+			);
 		}
 	},
 	{
@@ -143,7 +158,7 @@ const PageBooks: FunctionComponent = () => {
   return (
 	<div>
 	  <MaterialTable
-		title="Bookss"
+		title="Books"
 		isLoading={isTableLoading}
 		columns={columns}
 		data={books}

@@ -5,6 +5,7 @@ interface IUploadButtonProps {
 	accept?: string | undefined,
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
 	children?: React.ReactNode | undefined,
+	inputId?: string,
 }
 
 const UploadButton = (props: IUploadButtonProps) => {
@@ -13,12 +14,12 @@ const UploadButton = (props: IUploadButtonProps) => {
 			<input
 				accept={props.accept ? props.accept : "*"}
 				style={{ display: 'none' }}
-				id="file-input"
+				id={`file-input-${props.inputId ? props.inputId : 0}`}
 				multiple
 				type="file"
 				onChange={props.onChange}
 			/>
-			<label htmlFor="file-input">
+			<label htmlFor={`file-input-${props.inputId ? props.inputId : 0}`}>
 				<Button
 					variant="outline-secondary"
 					as="span"

@@ -5,12 +5,19 @@ import { Book, BookInput } from '../../../../interfaces/book';
 import { Author } from '../../../../interfaces/author';
 import { Genre } from '../../../../interfaces/genre';
 import { useFormik } from 'formik';
-import { Modal, Form } from "react-bootstrap";
+import { Modal, Form, InputGroup } from "react-bootstrap";
+import UploadButton from '../../../components/UploadButton';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // @ts-ignore
 import Chips, { Chip } from 'react-chips'
 import styles from './styles.module.scss';
+import * as FileUtils from '../../../../utils/FileUtils';
+import MomentUtils from '@date-io/moment';
+import DateFnsUtils from '@date-io/date-fns';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import moment from 'moment';
+import $ from "jquery";
 
 interface IDialogAddOrEditBookProps {
 	bookToEdit: Book | null, // null: DialogAdd. not null: DialogEdit
@@ -37,6 +44,9 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 	const [isLoadingSave, setIsLoadingSave] = useState(false);
 	const [selectedGenres, setSelectedGenres] = useState<Array<Genre>>([]);
 	const [selectedAuthors, setSelectedAuthors] = useState<Array<Author>>([]);
+	const [bookFile, setBookFile] = useState<any>();
+	const [bookImage, setBookImage] = useState<any>();
+	const [releasedDate, setReleasedDate] = useState('');
 
 	const validate = (values: BookInput) => {
 		const errors: any = {};
@@ -46,8 +56,11 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 		return errors;
 	}
 
-	const onSaveSuccessful = (resetForm: any) => {
+	const onSaveSuccessful = () => {
 		setIsLoadingSave(false);
+		setBookFile(null);
+		setBookImage(null);
+		setReleasedDate('');
 		props.onSave();
 	}
 
@@ -68,44 +81,83 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 		else {
 			// Submit
 			setIsLoadingSave(true);
-			const requestData = {
+			let bookInput = {
 				...values,
 				categoryIds: [ ...selectedGenres.map((genre: Genre) => genre.id) ],
-				authorIds: [ ...selectedAuthors.map((author: Author) => author.id) ]
+				authorIds: [ ...selectedAuthors.map((author: Author) => author.id) ],
+				releaseAt: releasedDate,
 			}
-			if (!props.bookToEdit) {
-				// Add Genre
-				bookAPI.createBook(requestData)
-					.then(response => {
-						console.log(response);
-						onSaveSuccessful(resetForm);
-					})
-					.catch(error => {
-						setIsLoadingSave(false);
-						console.log(error);
+			let uploadPromises: Promise<any>[] = [];
+			if (bookFile) {
+				uploadPromises.push(FileUtils.uploadFilePromise('BookFiles', bookFile));
+			}
+			if (bookImage) {
+				uploadPromises.push(FileUtils.uploadFilePromise('BookImages', bookImage));
+			}
+			if (uploadPromises.length > 0) {
+				Promise.all(uploadPromises)
+					.then(responses => {
+						// let bookInput: BookInput = { ...values };
+						if (bookFile) {
+							bookInput.link = responses[0];
+							if (bookImage) {
+								bookInput.image = responses[1];
+							}
+						}
+						else {
+							if (bookImage) {
+								bookInput.image = responses[0];
+							}
+						}
+						callAPI(bookInput);
 					})
 			}
 			else {
-				// Update Genre
-				bookAPI.updateBook(props.bookToEdit.id, requestData)
-					.then(response => {
-						console.log(response);
-						onSaveSuccessful(resetForm);
-					})
-					.catch(error => {
-						setIsLoadingSave(false);
-						console.log(error);
-					})
+				callAPI(bookInput);
 			}
 		}
 	}
 
+	const callAPI = (bookInput: BookInput) => {
+		if (!props.bookToEdit) {
+			bookAPI.createBook(bookInput)
+				.then(response => {
+					console.log(response);
+					onSaveSuccessful();
+				})
+				.catch(error => {
+					setIsLoadingSave(false);
+					console.log(error);
+				})
+		}
+		else {
+			bookAPI.updateBook(props.bookToEdit.id, bookInput)
+				.then(response => {
+					console.log(response);
+					onSaveSuccessful();
+				})
+				.catch(error => {
+					setIsLoadingSave(false);
+					console.log(error);
+				})
+		}
+	}
+
 	const onModalEnter = () => {
-		formik.resetForm()
-		console.log(props.genreList.map(genre => genre.name));
+		formik.resetForm();
+		setReleasedDate(props.bookToEdit ? props.bookToEdit.releaseAt.substring(0, 10) : '');
+		// console.log(props.genreList.map(genre => genre.name));
+		const dateInputElem = $('#mui-date-hidden input');
+		dateInputElem.attr('id', 'mui-date-input');
+		// console.log(dateInputElem);
+		const chipInputPlaceHolderElems = $("input[aria-controls='react-autowhatever-1']");
+		chipInputPlaceHolderElems.css({ "font-size": "1rem", "font-weight": "400", "line-height": "1.5", "color": "#495057" });
 	}
 
 	const onModalClose = () => {
+		setBookFile(null);
+		setBookImage(null);
+		setReleasedDate('');
 		props.onClose();
 	}
 
@@ -124,18 +176,39 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 		console.log(selectedAuthors);
 	}
 
+	const handleChoosingBookImage = (e: any) => {
+		console.log(e.target.files);
+		if (e.target.files[0]) {
+			const image = e.target.files[0];
+			setBookImage(image);
+		}
+	};
+
+	const handleChoosingBookFile = (e: any) => {
+		console.log(e.target.files);
+		if (e.target.files[0]) {
+			const file = e.target.files[0];
+			setBookFile(file);
+		}
+	};
+
 	const formik = useFormik({
 		initialValues: props.bookToEdit
 				? {
 					...props.bookToEdit,
-					categoryIds: [ ...props.bookToEdit.categories.map(category => category.id) ],
-					authorIds: [ ...props.bookToEdit.authors.map(author => author.id) ],
+					categoryIds: props.bookToEdit.categories
+							? [ ...props.bookToEdit.categories.map(category => category.id) ]
+							: [],
+					authorIds: props.bookToEdit.authors
+							? [ ...props.bookToEdit.authors.map(author => author.id) ]
+							: [],
 				}
 				: {
 					releaseAt: '',
 					title: '',
 					publisher: '',
 					image: '',
+					link: '',
 					description: '',
 					categoryIds: [],
 					authorIds: [],
@@ -188,6 +261,51 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 						/>
 					</Form.Group>
 					<Form.Group>
+						{/* <Form.Label>Published At</Form.Label> */}
+						{/* <Form.Control
+							id="bookDescription"
+							name="description"
+							placeholder="The Little Prince is a novella by French aristocrat, writer, and aviator Antoine de Saint-Exupéry."
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							value={formik.values.description}
+						/> */}
+						<div id="mui-date-hidden" style={{ display: 'none' }}>
+							<MuiPickersUtilsProvider utils={DateFnsUtils}>
+								<DatePicker
+									value={releasedDate}
+									onChange={(date: any) => {
+										if (date) {
+											setReleasedDate(date.toISOString().substring(0, 10));
+										}
+									}}
+								/>
+							</MuiPickersUtilsProvider>
+						</div>
+						<Form.Label>Published At</Form.Label>
+						<InputGroup style={{ position: "relative" }}>
+							<Form.Control
+								name="releasedDate"
+								placeholder="Released Date"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={releasedDate}
+							/>
+							<label style={{ position: "absolute", width: "100%", height: "100%" }} htmlFor="mui-date-input"/>
+							{/* <InputGroup.Append>
+								<label htmlFor="date-field">
+									<Button
+										variant="outline-secondary"
+										as="span"
+										style={{ borderBottomLeftRadius: 0, borderTopLeftRadius: 0 }}
+									>
+										{props.children}
+									</Button>
+								</label>
+							</InputGroup.Append> */}
+						</InputGroup>
+					</Form.Group>
+					{/* <Form.Group>
 						<Form.Label>Book Image URL</Form.Label>
 						<Form.Control
 							id="bookImageURL"
@@ -197,6 +315,48 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 							onBlur={formik.handleBlur}
 							value={formik.values.image}
 						/>
+					</Form.Group> */}
+					<Form.Group>
+						<Form.Label>Book Image</Form.Label>
+						<InputGroup>
+							<Form.Control
+								name="bookImage"
+								placeholder="Images Path"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={(bookImage != null && bookImage.name != null) ? bookImage.name : '' }
+							/>
+							<InputGroup.Append>
+								<UploadButton
+									accept="image/*"
+									onChange={handleChoosingBookImage}
+									inputId="image"
+								>
+									...
+								</UploadButton>
+							</InputGroup.Append>
+						</InputGroup>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Book File</Form.Label>
+						<InputGroup>
+							<Form.Control
+								name="bookFile"
+								placeholder="File Path"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={(bookFile != null && bookFile.name != null) ? bookFile.name : '' }
+							/>
+							<InputGroup.Append>
+								<UploadButton
+									accept=".epub"
+									onChange={handleChoosingBookFile}
+									inputId="file"
+								>
+									...
+								</UploadButton>
+							</InputGroup.Append>
+						</InputGroup>
 					</Form.Group>
 					<Form.Group>
 						<Form.Label>Genres</Form.Label>
