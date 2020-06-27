@@ -2,9 +2,12 @@ import React, { useState, FunctionComponent } from 'react';
 import * as authorAPI from '../../../../api/authorAPI';
 import { Author, AuthorInput } from '../../../../interfaces/author';
 import { useFormik } from 'formik';
-import { Modal, Form } from "react-bootstrap";
-import Button from '@material-ui/core/Button';
+import { Modal, Form, InputGroup, Col, Button } from "react-bootstrap";
+import MButton from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { storage } from '../../../../firebase/firebase';
+import UploadButton from '../../../components/UploadButton';
+import * as FileUtils from '../../../../utils/FileUtils';
 
 interface IDialogAddOrEditAuthorProps {
 	authorToEdit: Author | null, // null: DialogAdd. not null: DialogEdit
@@ -15,6 +18,7 @@ interface IDialogAddOrEditAuthorProps {
 
 const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (props) => {
 	const [isLoadingSave, setIsLoadingSave] = useState(false);
+	const [authorPhoto, setAuthorPhoto] = useState<any>();
 
 	const validate = (values: AuthorInput) => {
 		const errors: any = {};
@@ -26,6 +30,7 @@ const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (pr
 
 	const onSaveSuccessful = (resetForm: any) => {
 		setIsLoadingSave(false);
+		setAuthorPhoto(null);
 		props.onSave();
 	}
 
@@ -49,30 +54,37 @@ const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (pr
 		else {
 			// Submit
 			setIsLoadingSave(true);
-			if (!props.authorToEdit) {
-				// Add Genre
-				authorAPI.addAuthor(values)
-					.then(response => {
-						console.log(response);
-						onSaveSuccessful(resetForm);
-					})
-					.catch(error => {
-						setIsLoadingSave(false);
-						console.log(error);
-					})
-			}
-			else {
-				// Update Genre
-				authorAPI.updateAuthor(props.authorToEdit.id, values)
-					.then(response => {
-						console.log(response);
-						onSaveSuccessful(resetForm);
-					})
-					.catch(error => {
-						setIsLoadingSave(false);
-						console.log(error);
-					})
-			}
+			FileUtils.uploadFilePromise('AuthorPhotos', authorPhoto)
+				.then((photoUrl: any) => {
+					console.log(photoUrl);
+					const authorInput = { ...values, PhotoURL: photoUrl };
+					if (!props.authorToEdit) {
+						authorAPI.addAuthor(authorInput)
+							.then(response => {
+								console.log(response);
+								onSaveSuccessful(resetForm);
+							})
+							.catch(error => {
+								setIsLoadingSave(false);
+								console.log(error);
+							})
+					}
+					else {
+						authorAPI.updateAuthor(props.authorToEdit.id, authorInput)
+							.then(response => {
+								console.log(response);
+								onSaveSuccessful(resetForm);
+							})
+							.catch(error => {
+								setIsLoadingSave(false);
+								console.log(error);
+							})
+					}
+				})
+				.catch(error => {
+					setIsLoadingSave(false);
+					console.log(error);
+				})
 		}
 	}
 
@@ -81,8 +93,17 @@ const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (pr
 	}
 
 	const onModalClose = () => {
+		setAuthorPhoto(null);
 		props.onClose();
 	}
+
+	const handleChoosingImage = (e: any) => {
+		console.log(e.target.files);
+		if (e.target.files[0]) {
+			const image = e.target.files[0];
+			setAuthorPhoto(image);
+		}
+	};
 
 	const formik = useFormik({
 		initialValues: props.authorToEdit
@@ -110,7 +131,7 @@ const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (pr
 						<Form.Control
 							id="authorName"
 							name="name"
-							placeholder="Shakespeare"
+							placeholder="Input author name"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
 							value={formik.values.name}
@@ -133,13 +154,13 @@ const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (pr
 						<Form.Control
 							id="authorAbout"
 							name="about"
-							placeholder="British"
+							placeholder="Input author bio"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
 							value={formik.values.about}
 						/>
 					</Form.Group>
-					<Form.Group>
+					{/* <Form.Group>
 						<Form.Label>Photo URL</Form.Label>
 						<Form.Control
 							id="authorPhotoURL"
@@ -149,28 +170,47 @@ const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (pr
 							onBlur={formik.handleBlur}
 							value={formik.values.PhotoURL}
 						/>
+					</Form.Group> */}
+					<Form.Group>
+						<Form.Label>Photo</Form.Label>
+						<InputGroup>
+							<Form.Control
+								placeholder="Images Path"
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								value={(authorPhoto != null && authorPhoto.name != null) ? authorPhoto.name : '' }
+							/>
+							<InputGroup.Append>
+								<UploadButton
+									accept="image/*"
+									onChange={handleChoosingImage}
+								>
+									...
+								</UploadButton>
+							</InputGroup.Append>
+						</InputGroup>
 					</Form.Group>
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
-				<Button
+				<MButton
 					// color="primary"
 					onClick={() => onModalClose()}
 				>
 					Cancel
-				</Button>
+				</MButton>
 				<div style={{position: 'relative'}}>
-					<Button
+					<MButton
 						color="primary"
 						variant="contained"
 						onClick={(e: any) => {
-							formik.handleSubmit(e);
 							onSubmit();
+							formik.handleSubmit(e);
 						}}
 						disabled={isLoadingSave}
 					>
 						Save
-					</Button>
+					</MButton>
 					{isLoadingSave && <CircularProgress size={24} className="circular-center-size-24px" />}
 				</div>
 			</Modal.Footer>
