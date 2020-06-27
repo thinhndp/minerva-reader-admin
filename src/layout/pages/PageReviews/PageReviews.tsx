@@ -1,4 +1,5 @@
 import React, { useEffect, useState, FunctionComponent } from 'react';
+import { Link } from 'react-router-dom';
 
 // Misc
 import * as reviewAPI from '../../../api/reviewAPI';
@@ -15,7 +16,7 @@ import MaterialTable, { Column, MTableAction } from 'material-table';
 import DialogYesNo from '../../../components/DialogYesNo';
 
 // Class
-// import classes from './PageGenres.module.scss';
+import styles from './PageReviews.module.scss';
 
 const PageReviews: FunctionComponent = () => {
 	const [reviews, setReviews] = useState<Array<Review>>([]);
@@ -32,16 +33,20 @@ const PageReviews: FunctionComponent = () => {
 			title: 'Book',
 			field: 'bookId',
 			render: (rowData) => {
-				console.log(books);
 				const book: Book | undefined = books.find(book => book.id === rowData.bookId);
-				console.log(book);
 				const bookTitle = book ? book.title : 'Unknown';
 				return (<span>{bookTitle}</span>);
 			}
 		},
 		{ title: 'Comment', field: 'comment' },
 		{ title: 'User', field: 'username' },
-		{ title: 'Reports', field: 'reportCount' },
+		{
+			title: 'Reports',
+			field: 'reportCount',
+			render: (rowData) => {
+				return (<Link className={styles['link']} to={`/reviews/${rowData.id}/reports`}>{rowData.reportCount} report(s)</Link>);
+			}
+		},
 	]
 
 	useEffect(() => {

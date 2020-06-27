@@ -240,7 +240,7 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 			</Modal.Body>
 			<Modal.Footer>
 				<Button
-					color="primary"
+					// color="primary"
 					onClick={() => onModalClose()}
 				>
 					Cancel

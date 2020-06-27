@@ -107,7 +107,10 @@ const DialogAddOrEditUser: FunctionComponent<IDialogAddOrEditUserProps> = (props
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => onDialogClose()} color="primary">
+        <Button
+          onClick={() => onDialogClose()}
+          // color="primary"
+        >
           Cancel
         </Button>
         <div style={{position: 'relative'}}>

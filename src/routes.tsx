@@ -10,11 +10,12 @@ import PageRooms from './layout/pages/PageRoom/PageRoom';
 import PageScreenTypes from './layout/pages/PageScreenTypes/PageScreenTypes';
 import PageShowtimes from './layout/pages/PageShowtimes/PageShowtimes';
 import PageDiscounts from './layout/pages/PageDiscounts/PageDiscounts';
-import PageReport from './layout/pages/PageReport/PageReport';
 import PageUsers from './layout/pages/PageUsers/PageUsers';
 import PageAuthors from './layout/pages/PageAuthors/PageAuthors';
 import PageBooks from './layout/pages/PageBooks/PageBooks';
 import PageReviews from './layout/pages/PageReviews/PageReviews';
+import PageReports from './layout/pages/PageReports/PageReports';
+// import a from './layout/pages/';
 
 export const routes = [
   {
@@ -53,6 +54,11 @@ export const routes = [
     requiredRoles: ['ADMIN'],
   },
   {
+    path: '/reviews/:reviewId/reports',
+    component: <PageReports />,
+    requiredRoles: ['ADMIN'],
+  },
+  {
     path: '/movies',
     component: <PageMovies />,
     requiredRoles: ['ADMIN'],
@@ -80,11 +86,6 @@ export const routes = [
   {
     path: '/discounts',
     component: <PageDiscounts />,
-    requiredRoles: ['ADMIN'],
-  },
-  {
-    path: '/report',
-    component: <PageReport />,
     requiredRoles: ['ADMIN'],
   },
   {

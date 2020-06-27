@@ -154,7 +154,7 @@ const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (pr
 			</Modal.Body>
 			<Modal.Footer>
 				<Button
-					color="primary"
+					// color="primary"
 					onClick={() => onModalClose()}
 				>
 					Cancel

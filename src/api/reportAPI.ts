@@ -1,5 +1,5 @@
 import axios from 'axios';
 
-export const getReportOfMonth = (time: String) => {
-  return axios.post('/reports', { time: time });
+export const getReportsByReviewId = (reviewId: string) => {
+	return axios.get(`/reviews/${reviewId}/reports`);
 }
