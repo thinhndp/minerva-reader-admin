@@ -146,6 +146,12 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 	const onModalEnter = () => {
 		formik.resetForm();
 		setReleasedDate(props.bookToEdit ? props.bookToEdit.releaseAt.substring(0, 10) : '');
+		if (props.bookToEdit && props.bookToEdit.categories) {
+			setSelectedGenres([ ...props.bookToEdit.categories ]);
+		}
+		if (props.bookToEdit && props.bookToEdit.authors) {
+			setSelectedAuthors([ ...props.bookToEdit.authors ]);
+		}
 		// console.log(props.genreList.map(genre => genre.name));
 		const dateInputElem = $('#mui-date-hidden input');
 		dateInputElem.attr('id', 'mui-date-input');
@@ -291,7 +297,7 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 								onBlur={formik.handleBlur}
 								value={releasedDate}
 							/>
-							<label style={{ position: "absolute", width: "100%", height: "100%" }} htmlFor="mui-date-input"/>
+							<label style={{ position: "absolute", width: "100%", height: "100%", cursor: "pointer" }} htmlFor="mui-date-input"/>
 							{/* <InputGroup.Append>
 								<label htmlFor="date-field">
 									<Button
@@ -371,6 +377,8 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 							)}
 							suggestionsFilter={(opt: any, val: any) => (
 								opt.name.toLowerCase().indexOf(val.toLowerCase()) !== -1
+								&& (!selectedGenres ||
+									selectedGenres?.findIndex(genre => genre.name == opt.name) === -1)
 							)}
 							getSuggestionValue={(genre: Genre) => genre.name}
 							fromSuggestionsOnly={true}
@@ -390,6 +398,8 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 							)}
 							suggestionsFilter={(opt: any, val: any) => (
 								opt.name.toLowerCase().indexOf(val.toLowerCase()) !== -1
+								&& (!selectedAuthors ||
+									selectedAuthors?.findIndex(author => author.name == opt.name) === -1)
 							)}
 							getSuggestionValue={(author: Author) => author.name}
 							fromSuggestionsOnly={true}

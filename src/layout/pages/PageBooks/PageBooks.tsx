@@ -107,7 +107,7 @@ const PageBooks: FunctionComponent = () => {
 				// genres = [ ...genreResponse.data.categories ];
 				setAuthors([ ...authorResponse.data.authors ]);
 				setGenres([ ...genreResponse.data.categories ]);
-				console.log(genres);
+				console.log(genreResponse.data.categories);
 			})
 			.catch(error => {
 				setIsTableLoading(false);
@@ -158,7 +158,7 @@ const PageBooks: FunctionComponent = () => {
   return (
 	<div>
 	  <MaterialTable
-		title="Books"
+		title="Bookss"
 		isLoading={isTableLoading}
 		columns={columns}
 		data={books}
