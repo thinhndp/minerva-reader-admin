@@ -10,5 +10,5 @@ export const getReviewById = (id: string) => {
 }
 
 export const deleteReview = (id: string) => {
-	return axios.delete(`/reviews/${id}`);
+	return axios.delete(`/reviews/${id}/admin`);
 }

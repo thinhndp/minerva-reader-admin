@@ -1,8 +1,10 @@
 import { storage } from '../firebase/firebase';
 
-export const uploadFilePromise = async (folder: string, file: any) => {
+export const uploadFilePromise = async (folder: string, file: any, name: string) => {
+	const fileName = name.replace(/\s+/g, '');
+	const fileExtension = file.name.split('.').pop();
 	return new Promise((resolve, reject) => {
-		const uploadTask = storage.ref(`${folder}/${file.name}`).put(file);
+		const uploadTask = storage.ref(`${folder}/${fileName}.${fileExtension}`).put(file);
 		uploadTask.on(
 			"state_changed",
 			(snapshot) => {},
@@ -13,7 +15,7 @@ export const uploadFilePromise = async (folder: string, file: any) => {
 			() => {
 				storage
 					.ref(folder)
-					.child(file.name)
+					.child(`${fileName}.${fileExtension}`)
 					.getDownloadURL()
 					.then(url => {
 						// console.log(url);

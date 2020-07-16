@@ -40,7 +40,7 @@ const PageBooks: FunctionComponent = () => {
 //   let genres: Genre[] = [];
   
   const columns: Array<Column<Book>> = [
-	{ title: 'Id', field: 'id', editable: 'never', cellStyle: {width: '300px'} },
+	// { title: 'Id', field: 'id', editable: 'never', cellStyle: {width: '300px'} },
 	{ title: 'Title', field: 'title' },
 	{ title: 'Description', field: 'description' },
 	{

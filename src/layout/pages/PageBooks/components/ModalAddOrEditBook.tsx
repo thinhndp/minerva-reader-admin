@@ -89,10 +89,10 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 			}
 			let uploadPromises: Promise<any>[] = [];
 			if (bookFile) {
-				uploadPromises.push(FileUtils.uploadFilePromise('BookFiles', bookFile));
+				uploadPromises.push(FileUtils.uploadFilePromise('BookFiles', bookFile, values.title));
 			}
 			if (bookImage) {
-				uploadPromises.push(FileUtils.uploadFilePromise('BookImages', bookImage));
+				uploadPromises.push(FileUtils.uploadFilePromise('BookImages', bookImage, values.title));
 			}
 			if (uploadPromises.length > 0) {
 				Promise.all(uploadPromises)
@@ -149,8 +149,14 @@ const ModalAddOrEditBook: FunctionComponent<IDialogAddOrEditBookProps> = (props)
 		if (props.bookToEdit && props.bookToEdit.categories) {
 			setSelectedGenres([ ...props.bookToEdit.categories ]);
 		}
+		else {
+			setSelectedGenres([]);
+		}
 		if (props.bookToEdit && props.bookToEdit.authors) {
 			setSelectedAuthors([ ...props.bookToEdit.authors ]);
+		}
+		else {
+			setSelectedAuthors([]);
 		}
 		// console.log(props.genreList.map(genre => genre.name));
 		const dateInputElem = $('#mui-date-hidden input');

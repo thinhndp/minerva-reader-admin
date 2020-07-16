@@ -54,7 +54,7 @@ const ModalAddOrEditAuthor: FunctionComponent<IDialogAddOrEditAuthorProps> = (pr
 			// Submit
 			setIsLoadingSave(true);
 			if (authorPhoto) {
-				FileUtils.uploadFilePromise('AuthorPhotos', authorPhoto)
+				FileUtils.uploadFilePromise('AuthorPhotos', authorPhoto, values.name)
 					.then((photoUrl: any) => {
 						console.log(photoUrl);
 						const authorInput = { ...values, PhotoURL: photoUrl };
